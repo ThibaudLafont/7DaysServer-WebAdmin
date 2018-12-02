@@ -47,6 +47,26 @@
     float: left;
 }
 
+#update-running{
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: none; 
+}
+#update-running p {
+    display: block;
+    background: white;
+    width: 450px;
+    height: 200px;
+    margin: 15rem auto 0 auto;
+    display: flex;
+    align-items: center;
+    padding: 1.5rem;
+}
+
 #login-form {
     width: 400px;
     margin: 10rem auto 0 auto;

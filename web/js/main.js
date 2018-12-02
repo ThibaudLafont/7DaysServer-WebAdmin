@@ -43,7 +43,6 @@ function getLogs(){
     $.get(
         "/get-logs",
         function(data) {
-            console.log(data)
             // Store current log file name and actual content
             var currentFileName = $('#current-log-file').text();
 
@@ -143,8 +142,8 @@ function serverState(){
                 if(span.textContent == 'État : Démarré') {
                     // Toggle state
                     span.textContent = 'État : Stoppé';
-                    span.classList.remove('label-danger');
-                    span.classList.add('label-success');
+                    span.classList.remove('label-sucess');
+                    span.classList.add('label-danger');
                 }
                 // If start button is not show
                 if(getComputedStyle(startButton, null).display == 'none') {
@@ -202,15 +201,43 @@ function reloadServer() {
     })
 }
 function updateServer() {
+    var p = document.createElement('p');
+    // Show update-running
+    $('#update-running').show()
+
     $.get(
         '/update-server',
         function(response) {
-            console.log('Serveur mis à jour')
+            console.log('Serveur mis à jour');
+
+            $('#update-running').hide();
+
+            var p = document.createElement('p');
+            p.textContent = 'Mise à jour terminée';
+            $('#logs-output').append(p)
         }
     ).fail(function() {
         displayError('Mise à jour impossible ou erreur d\'éxecution')
     })
 }
+// Show tool box when update
+$(function() {
+    var check = setInterval(isUpdateRunning, 1000);
+
+    function isUpdateRunning() {
+        $.get(
+            '/is-update-running',
+            function(response){
+                if(!response) {
+                    if ($('#update-running').css('display') != 'none'){
+                        $('#update-running').hide()                        
+                    }
+                } else {
+                    $('#update-running').show()
+                }
+            })
+    }
+});
 
 function displayError(errorMessage) {
     var alertEl = document.getElementById('error-server-alert');

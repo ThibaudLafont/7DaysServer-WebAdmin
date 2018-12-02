@@ -26,7 +26,7 @@ class ScriptController extends Controller
     public function state()
     {
         $output = $this->getScriptService()->execScript('serverState.sh');
-        if($output === null) {
+        if(is_null($output)) {
             $return = false;
         } else {
             $return = true;
@@ -66,9 +66,24 @@ class ScriptController extends Controller
      */
     public function update()
     {
-        $this->getScriptService()->execScript('update7days.sh');
+        $this->getScriptService()->execScript('update7days.sh'); 
         return $this->json(true);
     }
+
+    /**
+     * @Route("/is-update-running", name="is_update_running")
+     */
+    public function isUpdating()
+    {
+        $output = $this->getScriptService()->execScript('isUpdateRunning.sh'); 
+        if(is_null($output)) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+        return $this->json($return);
+    }
+
 
     /**
      * @return Script

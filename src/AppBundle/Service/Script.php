@@ -15,7 +15,8 @@ class Script
 
     public function execScript(string $scriptName)
     {
-        return shell_exec('sudo -u game ' . $this->generateScriptPath($scriptName));
+        $output = shell_exec('sudo -u game ' . $this->generateScriptPath($scriptName));
+	return $output;
     }
 
     private function generateScriptPath($scriptName)
