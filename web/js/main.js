@@ -43,6 +43,7 @@ function getLogs(){
     $.get(
         "/get-logs",
         function(data) {
+            console.log(data)
             // Store current log file name and actual content
             var currentFileName = $('#current-log-file').text();
 
@@ -53,37 +54,56 @@ function getLogs(){
                 // Inject all content
                 var injects = data['logs'];
                 // Store actual file content in DOM
-                $('#actual-file-content').text(data['logs'])
+                $('#actual-file-content').empty();
+                appendLogLines(data['logs'], '#actual-file-content')
 
             // If same file
             } else if (currentFileName == data['path']) {
                 // Get actual file log content
                 var actualContent = $('#actual-file-content').text().split('\n');
-
                 // If data length > actual
                 if(actualContent.length < (data['logs'].length +1)) {
                     // Extract new lines
                     var newLinesCount = (data['logs'].length+1) - actualContent.length;
                     var injects = data['logs'].slice(-newLinesCount)
                     // Store actual file content in DOM
-                    $('#actual-file-content').text(data['logs'])
+                    $('#actual-file-content').empty();
+                    appendLogLines(data['logs'], '#actual-file-content')
                 } else {
                     var injects = [];
                 }
             }
 
             // Append all injects
-            injects.forEach(function(e){
-                var p = document.createElement('p');
-                p.textContent = e;
-                $('#logs-output').append(p);
-            });
+            appendLogLines(injects, '#logs-output')
         }
     ).fail(function() {
         var alertEl = document.getElementById('error-server-logs-alert');
         alertEl.textContent = 'Récupération des logs impossible ou erreur d\'éxecution';
         alertEl.style.display = 'block';
     })
+}
+
+function appendLogLines(elements, domObjSelector){
+    elements.forEach(function(e){
+        // Create element
+        var p = document.createElement('p');
+
+        // Add class for log type
+        if(e['type'] == 'info') {
+            p.classList.add('log-info');
+        } else if(e['type'] == 'warning') {
+            p.classList.add('log-warning');
+        } else if(e['type'] == 'error') {
+            p.classList.add('log-error');
+        } else if(e['type'] == 'common') {
+            p.classList.add('log-common');
+        }
+
+        // Set content and append
+        p.textContent = e['content'];
+        $(domObjSelector).append(p);
+    });
 }
 
 // Scroll to logs div bottom
@@ -111,13 +131,13 @@ function serverState(){
                     span.classList.add('label-success');
                 }
                 // If start button not displayed
-                // if(getComputedStyle(stopButton, null).display == 'none') {
-                //     stopButton.style.display = 'inline-block'
-                // }
-                // // If stop button is display
-                // if(getComputedStyle(startButton, null).display == 'inline-block') {
-                //     startButton.style.display = 'none'
-                // }
+                if(getComputedStyle(stopButton, null).display == 'none') {
+                    stopButton.style.display = 'inline-block'
+                }
+                // If stop button is display
+                if(getComputedStyle(startButton, null).display == 'inline-block') {
+                    startButton.style.display = 'none'
+                }
             } else {
                 // If state is not good one
                 if(span.textContent == 'État : Démarré') {
@@ -126,14 +146,14 @@ function serverState(){
                     span.classList.remove('label-danger');
                     span.classList.add('label-success');
                 }
-                // // If start button is not show
-                // if(getComputedStyle(startButton, null).display == 'none') {
-                //     startButton.style.display = 'inline-block'
-                // }
-                // // If stop button is display
-                // if(getComputedStyle(stopButton, null).display == 'inline-block') {
-                //     stopButton.style.display = 'none'
-                // }
+                // If start button is not show
+                if(getComputedStyle(startButton, null).display == 'none') {
+                    startButton.style.display = 'inline-block'
+                }
+                // If stop button is display
+                if(getComputedStyle(stopButton, null).display == 'inline-block') {
+                    stopButton.style.display = 'none'
+                }
             }
         }
     ).fail(function() {

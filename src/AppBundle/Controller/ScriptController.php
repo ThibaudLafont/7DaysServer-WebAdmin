@@ -3,12 +3,23 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Service\Logs;
+use AppBundle\Service\Script;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ScriptController extends Controller
 {
+    /**
+     * @var Script
+     */
+    private $scriptService;
+
+    public function __construct(Script $scriptService)
+    {
+        $this->setScriptService($scriptService);
+    }
+
     /**
      * @Route("/server-state", name="server_state")
      */
@@ -47,6 +58,22 @@ class ScriptController extends Controller
     public function update()
     {
         return $this->json(false);
+    }
+
+    /**
+     * @return Script
+     */
+    public function getScriptService()
+    {
+        return $this->scriptService;
+    }
+
+    /**
+     * @param Script $scriptService
+     */
+    public function setScriptService($scriptService)
+    {
+        $this->scriptService = $scriptService;
     }
 
 }

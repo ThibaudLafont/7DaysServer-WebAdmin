@@ -1,6 +1,8 @@
 <?php
 namespace AppBundle\Service;
 
+use AppBundle\Entity\Log;
+
 class Logs
 {
     /**
@@ -17,12 +19,23 @@ class Logs
     {
         // Get log files form base dir
         $logFiles = $this->getLogsFileFromDir($this->getLogDir());
+        $filePath = $this->getMostRecent($logFiles)['path'];
+
+        // Create Log entity foreach line
+        $lines = file($filePath);
+        $logs = [];
+        foreach ($lines as $line) {
+            $log = new Log($line);
+            $logs[] = [
+                'type' => $log->getType(),
+                'content' => $log->getContent()
+            ];
+        }
 
         // Return most recent file path and content
-        $filePath = $this->getMostRecent($logFiles)['path'];
         return [
             'path' => str_replace($this->getLogDir(), '', $filePath),
-            'logs' => file($filePath)
+            'logs' => $logs
         ];
     }
 

@@ -31,6 +31,12 @@
 #logs-output p {
     margin: 0;
 }
+#logs-output p.log-warning {
+    color: yellow;
+}
+#logs-output p.log-error {
+    color: red;
+}
 
 #logs-actions {
     margin-top: 1rem;
