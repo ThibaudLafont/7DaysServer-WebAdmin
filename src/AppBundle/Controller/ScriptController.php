@@ -25,7 +25,13 @@ class ScriptController extends Controller
      */
     public function state()
     {
-        return $this->json(false);
+        $output = $this->getScriptService()->execScript('serverState.sh');
+        if($output === null) {
+            $return = false;
+        } else {
+            $return = true;
+        }
+        return $this->json($return);
     }
 
     /**
@@ -33,7 +39,8 @@ class ScriptController extends Controller
      */
     public function start()
     {
-        return $this->json(false);
+        $this->getScriptService()->execScript('start7days.sh');
+        return $this->json(true);
     }
 
     /**
@@ -41,7 +48,8 @@ class ScriptController extends Controller
      */
     public function stop()
     {
-        return $this->json(false);
+        $this->getScriptService()->execScript('stop7days.sh');
+        return $this->json(true);
     }
 
     /**
@@ -49,7 +57,8 @@ class ScriptController extends Controller
      */
     public function reload()
     {
-        return $this->json(false);
+        $this->getScriptService()->execScript('reload7days.sh');
+        return $this->json(true);
     }
 
     /**
@@ -57,7 +66,8 @@ class ScriptController extends Controller
      */
     public function update()
     {
-        return $this->json(false);
+        $this->getScriptService()->execScript('update7days.sh');
+        return $this->json(true);
     }
 
     /**

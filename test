@@ -1,0 +1,1 @@
+echo pomme | su -c whoami test
