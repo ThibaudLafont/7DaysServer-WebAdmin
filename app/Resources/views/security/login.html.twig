@@ -1,0 +1,38 @@
+{%  extends 'base.html.twig' %}
+{% block body %}
+    <form id="login-form" action="{{ path('login') }}" method="post">
+        <h3>Connexion</h3>
+        {% if error %}
+            <div class="alert alert-danger" role="alert">
+                {#{{ error.messageKey|trans(error.messageData, 'security') }}#}
+                Erreur de connexion
+            </div>
+        {% endif %}
+        <div class="input-group">
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-user"></span>
+            </span>
+            <input type="text"
+                   id="username"
+                   name="_username"
+                   value="{{ last_username }}"
+                   class="form-control"
+                   placeholder="Utilisateur"
+                   aria-describedby="basic-addon1"/>
+        </div>
+
+        <div class="input-group">
+            <span class="input-group-addon" id="basic-addon1">
+                <span class="glyphicon glyphicon-option-horizontal"></span>
+            </span>
+            <input type="password"
+                   id="password"
+                   name="_password"
+                   class="form-control"
+                   placeholder="Mot de passe"
+                   aria-describedby="basic-addon1"/>
+        </div>
+
+        <button type="submit" class="btn btn-success">Se connecter</button>
+    </form>
+{% endblock %}

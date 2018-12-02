@@ -21,16 +21,8 @@ class LogsController extends Controller
      */
     public function getlogs()
     {
-        $logs = $this->getLogsService()->getMostRecentLogFile('/home/');
-        return $this->json(array_reverse($logs));
-    }
-
-    /**
-     * @Route("/logs", name="logs")
-     */
-    public function logs()
-    {
-        return $this->render('default/logs.html.twig', compact('logs'));
+        $logs = $this->getLogsService()->getMostRecentLogFile();
+        return $this->json($logs);
     }
 
     /**

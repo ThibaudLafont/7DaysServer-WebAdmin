@@ -1,0 +1,60 @@
+.navbar-brand {
+    height: auto;
+}
+.navbar-brand {
+    height: 100px;
+}
+
+#error-server-alert,
+#error-server-state-alert,
+#error-server-logs-alert{
+    display: none;
+}
+
+#top-line {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+#stop-button{
+    display: none;
+}
+
+#logs-output {
+    margin-top: 2rem;
+    height: 600px;
+    overflow-y: scroll;
+    padding: 1rem;
+    background-color: #1c1c1c;
+    color: white;
+}
+#logs-output p {
+    margin: 0;
+}
+
+#logs-actions {
+    margin-top: 1rem;
+    text-align: right;
+}
+
+#current-log-file {
+    float: left;
+}
+
+#login-form {
+    width: 400px;
+    margin: 10rem auto 0 auto;
+    border: 1px solid #D3D3D3;
+    border-radius: 5px;
+    padding: 2rem;
+}
+#login-form h3 {
+    margin: 0 0 2rem 0;
+}
+#login-form .input-group {
+    margin-bottom: 1rem;
+}
+#login-form button {
+    margin-top: 1rem;
+    width: 100%;
+}

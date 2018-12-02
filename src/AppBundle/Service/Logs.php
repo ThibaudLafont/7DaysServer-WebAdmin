@@ -3,13 +3,27 @@ namespace AppBundle\Service;
 
 class Logs
 {
-    public function getMostRecentLogFile($baseDir)
+    /**
+     * @var string
+     */
+    private $logDir;
+
+    public function __construct(string $logDir)
+    {
+        $this->setLogDir($logDir);
+    }
+
+    public function getMostRecentLogFile()
     {
         // Get log files form base dir
-        $logFiles = $this->getLogsFileFromDir($baseDir);
+        $logFiles = $this->getLogsFileFromDir($this->getLogDir());
 
-        // Return most recent file
-        return file($this->getMostRecent($logFiles)['path']);
+        // Return most recent file path and content
+        $filePath = $this->getMostRecent($logFiles)['path'];
+        return [
+            'path' => str_replace($this->getLogDir(), '', $filePath),
+            'logs' => file($filePath)
+        ];
     }
 
     private function getLogsFileFromDir($baseDir)
@@ -43,7 +57,7 @@ class Logs
         // Loop on goodfiles
         $recent = null;
         foreach ($files as $key=>$actual) {
-            // If nor first file
+            // If not first file
             if($key !== 0){
                 // Determine diff with most recent
                 $diff = $actual['date']->diff($recent['date'], false)->format('%R');
@@ -53,6 +67,7 @@ class Logs
                     $recent = $actual;
                 } else {
                     // TODO: Delete file
+//                    delete($actual['path']);
                 }
             // If first file, store it as most recent
             } else {
@@ -61,5 +76,21 @@ class Logs
         }
 
         return $recent;
+    }
+
+    /**
+     * @return string
+     */
+    public function getLogDir() : string
+    {
+        return $this->logDir;
+    }
+
+    /**
+     * @param string $logDir
+     */
+    public function setLogDir($logDir)
+    {
+        $this->logDir = $logDir;
     }
 }
